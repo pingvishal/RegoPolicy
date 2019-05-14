@@ -6,14 +6,35 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
-
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+variables:
+  global_var: 'GLOBAL'
+stages:
+- stage: build
+  variables:
+    global_var: 'build-stage'
+  displayName: Build stage
+  jobs:
+  - job: CI
+    displayName: CI build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: echo Hello, world! $(global_var)
+      displayName: 'Run a one-line script'
+- stage: deploy
+  dependsOn: build
+  variables:
+    global_var: 'deploy-stage'
+  jobs:
+  - deployment: deployment
+    displayName: Deployment
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: |
+              echo Add other tasks to build, test, and deploy your project.
+              echo variable: $(global_var)
+            displayName: 'Run a multi-line script'
