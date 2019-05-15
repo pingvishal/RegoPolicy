@@ -24,7 +24,7 @@ stages:
 - stage: deploy
   dependsOn: build
   variables:
-    global_var: 'deploy-stage'
+    stage_var: 'deploy-stage'
   jobs:
   - deployment: deployment
     displayName: Deployment
@@ -37,5 +37,5 @@ stages:
           steps:
           - script: |
               echo Add other tasks to build, test, and deploy your project.
-              echo variable: $(global_var)
+              echo stage variable: $(stage_var)
             displayName: 'Run a multi-line script'
