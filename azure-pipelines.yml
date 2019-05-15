@@ -8,6 +8,7 @@ trigger:
 
 variables:
   global_var: 'GLOBAL'
+  group: var-group
 stages:
 - stage: build
   variables:
@@ -19,7 +20,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - script: echo Hello, world! $(global_var)
+    - script: echo Hello, world! $(var-group.group-var-1)
       displayName: 'Run a one-line script'
 - stage: deploy
   dependsOn: build
