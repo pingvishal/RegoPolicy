@@ -27,6 +27,9 @@ stages:
     stage_var: 'deploy-stage'
   jobs:
   - deployment: deployment
+    variables:
+      job_variable: 'job variable'
+      stage_var: 'deploy override'
     displayName: Deployment
     environment: 'test'
     pool:
@@ -37,5 +40,5 @@ stages:
           steps:
           - script: |
               echo Add other tasks to build, test, and deploy your project.
-              echo stage variable: $(stage_var)
+              echo stage variable: $(stage_var) $(job_variable)
             displayName: 'Run a multi-line script'
